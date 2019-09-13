@@ -7,7 +7,7 @@ module.exports = {
     getProjectById,
     getEntireProject,
     addTask,
-    addResource
+    // addResource
 }
 
 function getProjects() {
@@ -45,20 +45,27 @@ function getProjectById(id) {
     )
 }
 
-function addTask(id) {
+function addTask(taskData, id) {
+    taskData.project_id = id
 
+    return db('tasks')
+        .insert(taskData)
 }
 
-function addResource() {
+// function addResource(resourceData) {
+//     return db('resource')
+//         .insert(resourceData)
 
-}
+// }
 
 function getEntireProject(id) {
     const projectQuery = getProject().where({ id }).first()
     const tasksQuery = getProjectTasks(id)
-    return Promise.all([projectQuery, tasksQuery])
-        .then(([project, tasks]) => {
+    const resourceList = getResourceList(id)
+    return Promise.all([projectQuery, tasksQuery, resourceList])
+        .then(([project, tasks, resources]) => {
             project.tasks = tasks;
+            project.resources = resources;
             return project
         })
 }
