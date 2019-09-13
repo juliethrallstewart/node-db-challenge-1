@@ -16,7 +16,7 @@ function getProjects() {
 
 function getProjectTasks(id) {
     return db('projects as p')
-        .select('p.project_name', 't.task_name', 't.task_order')
+        .select('p.project_name', 't.task_name', 't.task_order', 't.task_completed')
         .join('tasks as t', 'p.id', 't.project_id')
         .where({ project_id: id})
         .orderBy('t.task_order')

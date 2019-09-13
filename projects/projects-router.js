@@ -25,6 +25,7 @@ router.get('/:id', (req, res) => {
     const { id } = req.params
     Projects.getProjectById(id)
         .then(project => {
+            console.log(project)
             console.log(project.project_completed)
             if (project.project_completed === 0) {
                 project.project_completed = false
@@ -50,12 +51,12 @@ router.get('/:id/tasks', (req, res) => {
 
      Projects.getProjectTasks(id)
         .then(tasks => {
-            console.log(tasks.task_completed)
-            if (tasks.task_completed === 0) {
-                tasks.task_completed = false
+            tasks.map(task => {
+            if (task.task_completed === 0) {
+                task.task_completed = false
             } else {
-                tasks.task_completed = true
-            }
+                task.task_completed = true
+            }})
             res.status(200).json(tasks)
         })
 })
