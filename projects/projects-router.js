@@ -8,6 +8,14 @@ const router = express.Router();
 router.get('/', (req, res) => {
     Projects.getProjects()
         .then(projects => {
+            projects.map(project => {
+                console.log(project.project_completed)
+                if (project.project_completed === 0) {
+                    project.project_completed = false
+                } else {
+                    project.project_completed = true
+                }
+            })
             res.status(200).json(projects)
         })
 })
@@ -17,6 +25,12 @@ router.get('/:id', (req, res) => {
     const { id } = req.params
     Projects.getProjectById(id)
         .then(project => {
+            console.log(project.project_completed)
+            if (project.project_completed === 0) {
+                project.project_completed = false
+            } else {
+                project.project_completed = true
+            }
             res.status(200).json(project)
         })
 })
@@ -36,6 +50,12 @@ router.get('/:id/tasks', (req, res) => {
 
      Projects.getProjectTasks(id)
         .then(tasks => {
+            console.log(tasks.task_completed)
+            if (tasks.task_completed === 0) {
+                tasks.task_completed = false
+            } else {
+                tasks.task_completed = true
+            }
             res.status(200).json(tasks)
         })
 })
@@ -71,19 +91,5 @@ router.post('/:id/tasks', (req, res) => {
     });
   });
 
-//   router.post('/resource', (req, res) => {
-//     const resourceData = req.body;
-  
-//     Projects.addResource(resourceData)
-//     .then(resource => {
-//       console.log(resource)
-//       res.status(201).json(resource);
-//     })
-//     .catch (err => {
-//       res.status(500).json({ message: 'Failed to create new resource' });
-//     });
-//   });
-
-
-
 module.exports = router;
+

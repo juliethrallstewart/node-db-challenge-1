@@ -36,7 +36,6 @@ function getResourceList(id) {
 
 function getProjectById(id) {
     return db('projects')
-        .select(['project_name'])
         .where({ id })
         .first()
         .then(project => {
