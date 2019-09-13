@@ -20,30 +20,43 @@ router.get('/', (req, res) => {
         })
 })
 
-router.get('/:id', (req, res) => {
-
-    const { id } = req.params
-    Projects.getProjectById(id)
-        .then(project => {
-            console.log(project)
-            console.log(project.project_completed)
-            if (project.project_completed === 0) {
-                project.project_completed = false
-            } else {
-                project.project_completed = true
-            }
-            res.status(200).json(project)
-        })
-})
-
 // router.get('/:id', (req, res) => {
 
 //     const { id } = req.params
-//     Projects.getEntireProject(id)
+//     Projects.getProjectById(id)
 //         .then(project => {
+//             console.log(project)
+//             console.log(project.project_completed)
+//             if (project.project_completed === 0) {
+//                 project.project_completed = false
+//             } else {
+//                 project.project_completed = true
+//             }
 //             res.status(200).json(project)
 //         })
 // })
+
+router.get('/:id', (req, res) => {
+
+    const { id } = req.params
+    Projects.getEntireProject(id)
+        .then(project => {
+            if (project.project_completed === 0) {
+                if (project.project_completed === 0) {
+                    project.project_completed = false
+                } else {
+                    project.project_completed = true
+                }
+            }
+            project.tasks.map(task => {
+                if (task.task_completed === 0) {
+                    task.task_completed = false
+                } else {
+                    task.task_completed = true
+                }})
+            res.status(200).json(project)
+        })
+})
 
 router.get('/:id/tasks', (req, res) => {
 

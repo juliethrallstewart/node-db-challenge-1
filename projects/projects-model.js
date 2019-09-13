@@ -16,7 +16,7 @@ function getProjects() {
 
 function getProjectTasks(id) {
     return db('projects as p')
-        .select('p.project_name', 't.task_name', 't.task_order', 't.task_completed')
+        .select('t.task_name', 't.task_order', 't.task_completed', 't.task_description')
         .join('tasks as t', 'p.id', 't.project_id')
         .where({ project_id: id})
         .orderBy('t.task_order')
@@ -28,7 +28,7 @@ function getProjectTasks(id) {
 
 function getResourceList(id) {
     return db('projects as p')
-    .select('p.project_name', 'r.resource_name')
+    .select('r.resource_name', 'r.resource_description')
     .join('project_resources as pr', 'p.id', 'pr.project_id')
     .join('resources as r', 'pr.resource_id', 'r.id')
     .where({project_id: id})
@@ -58,7 +58,7 @@ function addTask(taskData, id) {
 // }
 
 function getEntireProject(id) {
-    const projectQuery = getProject().where({ id }).first()
+    const projectQuery = getProjects().where({ id }).first()
     const tasksQuery = getProjectTasks(id)
     const resourceList = getResourceList(id)
     return Promise.all([projectQuery, tasksQuery, resourceList])
